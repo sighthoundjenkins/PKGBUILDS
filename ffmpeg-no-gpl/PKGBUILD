@@ -67,6 +67,6 @@ package() {
 
 prepare() {
   cd "${srcdir}"/ffmpeg-${pkgver}
-  patch -p1 < ../../allow-x264.patch
+  patch -p1 < ../allow-x264.patch
 }
 # vim:set ts=2 sw=2 et:
