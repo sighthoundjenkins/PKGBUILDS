@@ -41,7 +41,7 @@ build() {
       --enable-avresample \
       --enable-fontconfig \
       --enable-libfreetype \
-      --enable-libvpx \
+      --disable-libvpx \
       --enable-libwebp \
       --enable-libx264 \
       --enable-zlib \
