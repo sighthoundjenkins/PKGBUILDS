@@ -41,14 +41,12 @@ build() {
       --enable-avresample \
       --enable-fontconfig \
       --enable-libfreetype \
-      --enable-libssh \
       --enable-libvpx \
       --enable-libwebp \
       --enable-libx264 \
       --enable-zlib \
       --enable-shared \
-      --disable-doc \
-      --disable-programs
+      --disable-doc
 
     make
   done
