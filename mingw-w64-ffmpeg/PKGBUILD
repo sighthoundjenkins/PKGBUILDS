@@ -36,6 +36,7 @@ build() {
       --enable-static \
       --disable-stripping \
       --disable-gpl \
+      --disable-nonfree \
       --disable-libssh \
       --disable-openssl \
       --enable-avresample \
