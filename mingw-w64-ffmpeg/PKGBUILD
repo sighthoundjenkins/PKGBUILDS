@@ -10,7 +10,7 @@ url="http://ffmpeg.org/"
 license=('GPL3')
 depends=(
 'mingw-w64-bzip2' 'mingw-w64-libwebp' 'mingw-w64-libvpx' 'mingw-w64-crt'
-'mingw-w64-libssh' 'mingw-w64-sdl' 'mingw-w64-x264' 'mingw-w64-zlib'
+'mingw-w64-sdl' 'mingw-w64-x264' 'mingw-w64-zlib'
 )
 
 options=(!strip !buildflags staticlibs)
@@ -36,9 +36,11 @@ build() {
       --enable-static \
       --disable-stripping \
       --disable-gpl \
+      --disable-libssh \
+      --disable-openssl \
       --enable-avresample \
       --disable-fontconfig \
-      --enable-libfreetype \
+      --disable-libfreetype \
       --disable-libvpx \
       --enable-libwebp \
       --enable-libx264 \
