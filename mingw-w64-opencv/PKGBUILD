@@ -8,8 +8,8 @@ url="http://opencv.org/"
 options=('!buildflags' 'staticlibs' '!strip')
 depends=('mingw-w64-crt' 'mingw-w64-jasper' 'mingw-w64-zlib')
 makedepends=('mingw-w64-cmake')
-source=("https://github.com/Itseez/opencv/archive/${pkgver}.tar.gz")
-md5sums=('70e1dd07f0aa06606f1bc0e3fa15abd3')
+source=("${pkgname%-git}::git+http://github.com/Itseez/opencv.git")
+md5sums=('SKIP')
 
 _architectures="i686-w64-mingw32 x86_64-w64-mingw32"
 
@@ -74,45 +74,43 @@ _cmakeopts=(
   '-DWITH_DSHOW=OFF'
 )
 
-prepare() {
-  cd "$srcdir/opencv-$pkgver"
-
-  # error: ‘DBL_EPSILON’ was not declared in this scope
-  grep -lr LDBL_EPSILON .| grep -v gch$ | xargs sed -i "s|LDBL_EPSILON|1.08420217248550443401e-19L|g"
-  grep -lr DBL_EPSILON . | grep -v gch$ | xargs sed -i "s|DBL_EPSILON|2.2204460492503131E-16|g"
-  grep -lr FLT_EPSILON . | grep -v gch$ | xargs sed -i "s|FLT_EPSILON|1.19209290E-07F|g"
-
-}
-
 build() {
-  cd "$srcdir/opencv-$pkgver"
+#  cd "$pkgname"
+#  git checkout 40eb613
+#  cd ..
+
   for _arch in ${_architectures}; do
-    mkdir -p build-${_arch} && pushd build-${_arch}
-    ${_arch}-cmake ${_cmakeopts[@]} ..
+    mkdir -p build-${_arch}
+    cd build-${_arch}
+
+    ${_arch}-cmake ${_cmakeopts[@]} "../$pkgname"
     make
-    popd
-#     mkdir -p build-${_arch}-static && pushd build-${_arch}-static
-#     ${_arch}-cmake ${_cmakeopts[@]} \
-#       -DBUILD_SHARED_LIBS=OFF \
-#       ..
-#     make
-#     popd
+
+    cd ..
   done
 }
 
 package() {
   for _arch in ${_architectures}; do
-#     cd "$srcdir/opencv-$pkgver/build-${_arch}-static"
-#     make DESTDIR="$pkgdir" install
-    cd "$srcdir/opencv-$pkgver/build-${_arch}"
+    cd build-${_arch}
+
     make DESTDIR="$pkgdir" install
     rm -r  "$pkgdir"/usr/${_arch}/share/
     install -d "$pkgdir"/usr/${_arch}/lib/pkgconfig
-    install -m644 "$srcdir"/opencv-$pkgver/build-${_arch}/unix-install/opencv.pc \
-      "$pkgdir"/usr/${_arch}/lib/pkgconfig/
+
+    install -m644 ./unix-install/opencv.pc "$pkgdir"/usr/${_arch}/lib/pkgconfig/
+
+    # They kinda forgot to write install rules for these _really sodding important_ things...
+    mkdir -p "$pkgdir"/usr/${_arch}/share/opencv/
+    install -m644 ./win-install/OpenCVConfig.cmake "$pkgdir"/usr/${_arch}/share/opencv/
+    install -m644 ./win-install/OpenCVConfig-version.cmake "$pkgdir"/usr/${_arch}/share/opencv/
+    install -m644 ./OpenCVModules.cmake "$pkgdir"/usr/${_arch}/share/opencv/
+
     rm "$pkgdir"/usr/${_arch}/LICENSE
     ${_arch}-strip --strip-unneeded "$pkgdir"/usr/${_arch}/bin/*.dll
     ${_arch}-strip -g "$pkgdir"/usr/${_arch}/lib/*.a
+
+    cd ..
   done
 }
 
