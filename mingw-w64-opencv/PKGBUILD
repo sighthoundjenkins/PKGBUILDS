@@ -75,9 +75,9 @@ _cmakeopts=(
 )
 
 build() {
-#  cd "$pkgname"
-#  git checkout 40eb613
-#  cd ..
+  cd "$pkgname"
+  git checkout 40eb613
+  cd ..
 
   for _arch in ${_architectures}; do
     mkdir -p build-${_arch}
