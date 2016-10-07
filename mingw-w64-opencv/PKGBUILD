@@ -106,6 +106,9 @@ package() {
     mkdir -p "$pkgdir"/usr/${_arch}/share/opencv/
     install -m644 ./win-install/OpenCVConfig.cmake "$pkgdir"/usr/${_arch}/share/opencv/
     install -m644 ./win-install/OpenCVConfig-version.cmake "$pkgdir"/usr/${_arch}/share/opencv/
+
+    # Hilarious hack to work around opencv build system brokenness...
+    sed -ie "s|$srcdir/build-${_arch}|/usr/${_arch}|g" ./OpenCVModules.cmake
     install -m644 ./OpenCVModules.cmake "$pkgdir"/usr/${_arch}/share/opencv/
 
     rm "$pkgdir"/usr/${_arch}/LICENSE
