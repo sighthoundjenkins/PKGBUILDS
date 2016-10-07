@@ -85,7 +85,7 @@ build() {
     mkdir -p build-${_arch}
     cd build-${_arch}
 
-    ${_arch}-cmake ${_cmakeopts[@]} "../$pkgname"
+    ${_arch}-cmake -DCMAKE_INSTALL_PREFIX=/usr/${_arch} ${_cmakeopts[@]} "../$pkgname"
     make
 
     cd ..
