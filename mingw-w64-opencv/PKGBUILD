@@ -78,7 +78,7 @@ _cmakeopts=(
 
 build() {
   cd "$pkgname"
-  git checkout 40eb613
+  git checkout dd379ec
   cd ..
 
   for _arch in ${_architectures}; do
