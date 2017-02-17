@@ -1,0 +1,19 @@
+# Maintainer: Xiang Gao <qasdfgtyuiop@gmail.com>
+pkgname=thrust
+pkgver=master
+pkgrel=1
+arch=('any')
+license=('APACHE')
+url="http://thrust.github.io/"
+pkgdesc="A parallel algorithms library which resembles the C++ Standard Template Library (STL)."
+
+source=("https://github.com/thrust/thrust/archive/$pkgver.zip")
+
+sha256sums=('SKIP')
+
+depends=('cuda')
+
+package() {
+    install -d "${pkgdir}/usr/include"
+    cp -r "${srcdir}/$pkgname-$pkgver/$pkgname" "${pkgdir}/usr/include/$pkgname"
+}
