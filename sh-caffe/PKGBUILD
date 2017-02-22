@@ -1,0 +1,52 @@
+pkgname=caffe
+pkgver=e909c8e
+pkgrel=1
+pkgdesc="Neural network toolkit, Sighthound fork"
+arch=('i686' 'x86_64')
+url="https://github.com/BVLC/caffe"
+license=('proprietary')
+groups=('base-devel')
+depends=('atlas-lapack-base' 'hdf5' 'boost' 'protobuf' 'google-glog'
+         'gflags' 'leveldb' 'snappy' 'lmdb' 'xz>=5' 'clang-svn' 'cuda>=8')
+makedepends=('git' 'cmake')
+
+# TODO: Change when `withClang` merges.
+source=("git+ssh://github.com/sighthoundinc/caffe.git")
+sha256sums=('SKIP')
+
+prepare() {
+    cd "$srcdir/$pkgname"
+    git checkout withClang
+}
+
+build() {
+    if [ $CARCH = "i686" ]; then
+        lib="lib"
+    else
+        lib="lib64"
+    fi
+
+    cd "$srcdir/$pkgname"
+    rm -fr build
+    mkdir build
+    cd build
+    cmake \
+        -DAtlas_LAPACK_LIBRARY=/usr/${lib}/libatlas.so \
+        -DAtlas_BLAS_LIBRARY=/usr/${lib}/libatlas.so \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -DCMAKE_C_COMPILER=clang \
+        -DBUILD_docs=OFF \
+        -DBUILD_python=OFF \
+        -DBUILD_matlab=OFF \
+        -DUSE_CLANG=ON \
+        -DUSE_OPENCV=OFF \
+        -DCMAKE_INSTALL_PREFIX=$pkgdir/usr/ \
+        ../
+
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname/build"
+    make install
+}
