@@ -1,7 +1,7 @@
 # Maintainer: Yunhui Fu <yhfudev@gmail.com>
 
 pkgname=google-glog-git
-pkgver=r232.ab65454
+pkgver=r233.7fcb189
 pkgrel=1
 pkgdesc="Logging library for C++, compiled with cmake"
 arch=('i686' 'x86_64')
@@ -13,7 +13,7 @@ conflicts=('google-glog')
 provides=('google-glog')
 source=(
     #"glog-$pkgver::https://github.com/google/glog/archive/v$pkgver.tar.gz"
-    "${pkgname}::git+https://github.com/google/glog.git"
+    "${pkgname}::git+https://github.com/ChrisKitching/glog.git"
 )
 
 
@@ -37,6 +37,7 @@ build4git() {
     cmake \
       -DCMAKE_CXX_COMPILER=clang++ \
       -DCMAKE_C_COMPILER=clang \
+      -DCMAKE_CXX_STANDARD=11 \
       -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
       -DCMAKE_EXE_LINKER_FLAGS="-lc++abi" \
       -DCMAKE_BUILD_TYPE=Release \
