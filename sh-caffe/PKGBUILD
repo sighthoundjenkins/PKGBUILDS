@@ -7,7 +7,7 @@ url="https://github.com/BVLC/caffe"
 license=('proprietary')
 groups=('base-devel')
 depends=('atlas-lapack-base' 'hdf5' 'boost' 'protobuf' 'google-glog'
-         'gflags' 'leveldb' 'snappy' 'lmdb' 'xz>=5' 'clang-svn' 'cuda>=8')
+         'gflags' 'xz>=5' 'clang-svn' 'cuda>=8')
 makedepends=('git' 'cmake')
 
 # TODO: Change when `withClang` merges.
@@ -17,6 +17,7 @@ sha256sums=('SKIP')
 prepare() {
     cd "$srcdir/$pkgname"
     git checkout withClang
+    git pull
 }
 
 build() {
@@ -35,9 +36,12 @@ build() {
         -DAtlas_BLAS_LIBRARY=/usr/${lib}/libatlas.so \
         -DCMAKE_CXX_COMPILER=clang++ \
         -DCMAKE_C_COMPILER=clang \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         -DBUILD_docs=OFF \
         -DBUILD_python=OFF \
         -DBUILD_matlab=OFF \
+        -DUSE_LMDB=OFF \
+        -DUSE_LEVELDB=OFF \
         -DUSE_CLANG=ON \
         -DUSE_OPENCV=OFF \
         -DCMAKE_INSTALL_PREFIX=$pkgdir/usr/ \
