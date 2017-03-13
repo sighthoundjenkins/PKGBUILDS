@@ -9,7 +9,7 @@ arch=('any')
 url="http://ffmpeg.org/"
 license=('GPL3')
 depends=(
-'mingw-w64-bzip2' 'mingw-w64-libvpx' 'mingw-w64-crt'
+'mingw-w64-bzip2' 'mingw-w64-crt'
 'mingw-w64-sdl' 'mingw-w64-x264' 'mingw-w64-zlib'
 )
 
