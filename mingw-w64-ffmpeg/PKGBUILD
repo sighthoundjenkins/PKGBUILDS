@@ -57,6 +57,7 @@ build() {
       --enable-decoder="jpeg2000" \
       --enable-decoder="h264" \
       --enable-decoder="mpeg4" \
+      --enable-decoder="mpeg2" \
       --enable-decoder="mjpeg" \
       --enable-decoder="mjpegb" \
       --enable-decoder="vp8" \
